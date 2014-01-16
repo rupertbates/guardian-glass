@@ -1,40 +1,36 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
              android:layout_height="match_parent">
+
     <ImageView
         android:id="@+id/image"
         android:src="@drawable/sir_peter_fahy"
         android:scaleType="centerCrop"
-        android:alpha="0.1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:padding="3dp"
+            android:layout_alignParentTop="true"
             android:id="@+id/title"
-            android:textSize="@dimen/title_text_size"
-            android:textStyle="bold"
+            style="@style/title_style"
             android:text="Greater Manchester police charged over shooting of Anthony Grainger"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            />
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="@android:color/white"/>
+            android:background="@android:color/black"/>
 
         <TextView
-            android:padding="3dp"
+            android:layout_alignParentBottom="true"
             android:text="CPS says marksman who shot unarmed man will not be prosecuted but force is charged under health and safety law"
             android:id="@+id/trail"
-            android:textSize="@dimen/trail_text_size"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+            style="@style/text_style"/>
+    </RelativeLayout>
 </FrameLayout>
