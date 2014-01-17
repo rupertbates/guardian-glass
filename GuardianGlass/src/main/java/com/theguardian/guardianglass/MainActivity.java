@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.glass.touchpad.Gesture;
 import com.google.android.glass.touchpad.GestureDetector;
 import com.squareup.picasso.Picasso;
@@ -36,7 +38,6 @@ public class MainActivity extends Activity {
     private ImageView imageView;
     private GestureDetector gestureDetector;
     private int currentCard;
-    private FrameLayout timestamp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +49,7 @@ public class MainActivity extends Activity {
         titleTextView.setText("Fetching top story");
         timestampText = (TextView) findViewById(R.id.timestamp_text);
         timestampText.setTypeface(tf);
-        timestamp = (FrameLayout) findViewById(R.id.timestamp);
-        timestamp.setVisibility(View.GONE);
-        //timestampText.setText("");
+        timestampText.setVisibility(View.GONE);
         imageView = (ImageView) findViewById(R.id.image);
         imageView.setImageDrawable(null);
         gestureDetector = createGestureDetector(this);
@@ -72,7 +71,7 @@ public class MainActivity extends Activity {
             @Override
             public boolean onGesture(Gesture gesture) {
                 if (gesture == Gesture.TAP) {
-                    // do something on tap
+                    openOptionsMenu();
                     return true;
                 } else if (gesture == Gesture.TWO_TAP) {
                     // do something on two finger tap
@@ -112,7 +111,7 @@ public class MainActivity extends Activity {
     }
 
     private void swipeRight() {
-        if(currentCard >= group.cards.length)
+        if(currentCard == group.cards.length - 1)
             return;
         currentCard++;
         setCardContent(currentCard);
@@ -133,8 +132,8 @@ public class MainActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.share_menu_item:
-                share();
+            case R.id.save_menu_item:
+                Toast.makeText(this, "Story saved to your Guardian account", Toast.LENGTH_LONG).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -202,8 +201,8 @@ public class MainActivity extends Activity {
         currentCard = i;
         GuardianCard card = getCard(i);
         titleTextView.setText(card.title);
-        timestamp.setVisibility(View.VISIBLE);
-        //timestampText.setText(Html.fromHtml(card.trailText));
+        timestampText.setText(card.getDisplayTime());
+        timestampText.setVisibility(View.VISIBLE);
         if(TextUtils.isEmpty(card.getImageUri()))
             return;
         Picasso.with(MainActivity.this)
