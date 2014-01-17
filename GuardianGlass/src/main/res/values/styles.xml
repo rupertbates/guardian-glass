@@ -1,11 +1,18 @@
 <resources>
     <style name="wrap">
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="text_style" parent="wrap">
-        <item name="android:padding">3dp</item>
+    <style name="wrap_fill_width" parent="wrap">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">fill_parent</item>
+    </style>
+
+    <style name="text_style" parent="wrap_fill_width">
+        <item name="android:paddingTop">@dimen/top_bottom_padding</item>
+        <item name="android:paddingBottom">@dimen/top_bottom_padding</item>
+        <item name="android:paddingLeft">@dimen/left_right_padding</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:background">#88000000</item>
         <item name="android:typeface">sans</item>
@@ -17,4 +24,6 @@
     </style>
 
 
+    <dimen name="top_bottom_padding">5dp</dimen>
+    <dimen name="left_right_padding">10dp</dimen>
 </resources>

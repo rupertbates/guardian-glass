@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.google.android.glass.touchpad.Gesture;
@@ -28,11 +31,12 @@ import java.net.URL;
 public class MainActivity extends Activity {
     public static final String LOG_TAG = "GuardianGlass";
     private TextView titleTextView;
-    private TextView trailTextView;
+    private TextView timestampText;
     private GuardianGroup group;
     private ImageView imageView;
     private GestureDetector gestureDetector;
     private int currentCard;
+    private FrameLayout timestamp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +46,13 @@ public class MainActivity extends Activity {
         titleTextView = (TextView) findViewById(R.id.title);
         titleTextView.setTypeface(tf);
         titleTextView.setText("Fetching top story");
-        trailTextView = (TextView) findViewById(R.id.trail);
-        trailTextView.setTypeface(tf);
-        trailTextView.setText("");
+        timestampText = (TextView) findViewById(R.id.timestamp_text);
+        timestampText.setTypeface(tf);
+        timestamp = (FrameLayout) findViewById(R.id.timestamp);
+        timestamp.setVisibility(View.GONE);
+        //timestampText.setText("");
         imageView = (ImageView) findViewById(R.id.image);
-        imageView.setBackgroundDrawable(null);
+        imageView.setImageDrawable(null);
         gestureDetector = createGestureDetector(this);
         new FetchCardTask().execute();
     }
@@ -196,7 +202,10 @@ public class MainActivity extends Activity {
         currentCard = i;
         GuardianCard card = getCard(i);
         titleTextView.setText(card.title);
-        trailTextView.setText(Html.fromHtml(card.trailText));
+        timestamp.setVisibility(View.VISIBLE);
+        //timestampText.setText(Html.fromHtml(card.trailText));
+        if(TextUtils.isEmpty(card.getImageUri()))
+            return;
         Picasso.with(MainActivity.this)
                 .load(card.getImageUri())
                 .placeholder(R.drawable.guardian_icon)

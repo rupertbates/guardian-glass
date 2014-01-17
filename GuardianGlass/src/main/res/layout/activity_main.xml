@@ -1,13 +1,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/image"
         android:src="@drawable/sir_peter_fahy"
         android:scaleType="centerCrop"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <RelativeLayout
         android:orientation="vertical"
@@ -15,22 +15,49 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <FrameLayout
+            android:id="@+id/timestamp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/left_right_padding"
+            android:foregroundGravity="center"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true">
+
+            <ImageView
+                android:id="@+id/timestamp_image"
+                android:src="@drawable/timestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/timestamp_text"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="12dp"
+                android:textSize="16sp"
+                android:padding="3dp"
+                android:textColor="@android:color/black"
+                android:text="53 min ago"
+                android:layout_width="wrap_content" />
+        </FrameLayout>
+
         <TextView
-            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
             android:id="@+id/title"
             style="@style/title_style"
             android:text="Greater Manchester police charged over shooting of Anthony Grainger"
-            />
+            android:layout_height="wrap_content" />
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="@android:color/black"/>
+            android:background="@android:color/black" />
 
-        <TextView
-            android:layout_alignParentBottom="true"
-            android:text="CPS says marksman who shot unarmed man will not be prosecuted but force is charged under health and safety law"
-            android:id="@+id/trail"
-            style="@style/text_style"/>
+        <!--<TextView-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:text="CPS says marksman who shot unarmed man will not be prosecuted but force is charged under health and safety law"-->
+        <!--android:id="@+id/trail"-->
+        <!--style="@style/text_style"/>-->
     </RelativeLayout>
 </FrameLayout>
