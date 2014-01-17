@@ -49,7 +49,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         Typeface tf = getFont();
         titleTextView = (TextView) findViewById(R.id.title);
         titleTextView.setTypeface(tf);
-        titleTextView.setText("Fetching top story");
+        titleTextView.setText("Fetching stories...");
         timestampText = (TextView) findViewById(R.id.timestamp_text);
         timestampText.setTypeface(tf);
         timestampText.setVisibility(View.GONE);
@@ -206,7 +206,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         protected GuardianGroup doInBackground(String... params) {
             ObjectMapper mapper = new ObjectMapper().configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             try {
-                URL url = new URL("http://mobile-apps.guardianapis.com/uk/groups/top-stories");
+                URL url = new URL("http://mobile-apps.guardianapis.com/uk/groups/section/technology"); //http://mobile-apps.guardianapis.com/uk/groups/top-stories");
                 return mapper.readValue(url, GuardianGroup.class);
 
             } catch (MalformedURLException e) {
