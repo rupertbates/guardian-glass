@@ -3,4 +3,8 @@
         android:id="@+id/save_menu_item"
         android:title="@string/save_for_later"
         android:icon="@drawable/ic_share_50"/>
+    <item
+        android:id="@+id/read_menu_item"
+        android:title="@string/read_aloud"
+        android:icon="@drawable/read_aloud"/>
 </menu>

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -29,8 +30,9 @@ import org.codehaus.jackson.map.ObjectMapper;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Locale;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements TextToSpeech.OnInitListener {
     public static final String LOG_TAG = "GuardianGlass";
     private TextView titleTextView;
     private TextView timestampText;
@@ -38,6 +40,7 @@ public class MainActivity extends Activity {
     private ImageView imageView;
     private GestureDetector gestureDetector;
     private int currentCard;
+    private TextToSpeech tts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +54,8 @@ public class MainActivity extends Activity {
         timestampText.setTypeface(tf);
         timestampText.setVisibility(View.GONE);
         imageView = (ImageView) findViewById(R.id.image);
-        imageView.setImageDrawable(null);
         gestureDetector = createGestureDetector(this);
+        tts = new TextToSpeech(this, this);
         new FetchCardTask().execute();
     }
 
@@ -135,9 +138,16 @@ public class MainActivity extends Activity {
             case R.id.save_menu_item:
                 Toast.makeText(this, "Story saved to your Guardian account", Toast.LENGTH_LONG).show();
                 return true;
+            case R.id.read_menu_item:
+                readTrail();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void readTrail() {
+        tts.speak(getCard(currentCard).trailText, TextToSpeech.QUEUE_FLUSH, null);
     }
 
     private void share() {
@@ -162,6 +172,32 @@ public class MainActivity extends Activity {
 
     public Typeface getFont(){
         return Typeface.createFromAsset(getAssets(), "GdnEgyDE2Lig.otf");
+    }
+
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+
+            int result = tts.setLanguage(Locale.UK);
+
+            if (result == TextToSpeech.LANG_MISSING_DATA
+                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS", "This Language is not supported");
+            }
+
+        } else {
+            Log.e("TTS", "Initilization Failed!");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        // Don't forget to shutdown tts!
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
     }
 
     class FetchCardTask extends AsyncTask<String, Integer, GuardianGroup> {
@@ -203,11 +239,14 @@ public class MainActivity extends Activity {
         titleTextView.setText(card.title);
         timestampText.setText(card.getDisplayTime());
         timestampText.setVisibility(View.VISIBLE);
-        if(TextUtils.isEmpty(card.getImageUri()))
+        if(TextUtils.isEmpty(card.getImageUri())){
+            imageView.setImageResource(R.drawable.loading);
             return;
+        }
         Picasso.with(MainActivity.this)
                 .load(card.getImageUri())
-                .placeholder(R.drawable.guardian_icon)
+                .placeholder(R.drawable.loading)
+                .error(R.drawable.loading)
                 .noFade()
                 .into(imageView);
 

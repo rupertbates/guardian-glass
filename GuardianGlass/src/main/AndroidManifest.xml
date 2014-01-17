@@ -24,6 +24,16 @@
             <meta-data android:name="com.google.android.glass.VoiceTrigger"
                        android:resource="@xml/voice_trigger" />
         </activity>
+
+        <activity
+            android:name="com.theguardian.guardianglass.PagerActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>
